@@ -18,6 +18,7 @@ class PriceCache:
     def __init__(self) -> None:
         self._prices: dict[str, PriceUpdate] = {}
         self._lock = Lock()
+        self._session_opens: dict[str, float] = {}  # First price per ticker; survives remove()
         self._version: int = 0  # Monotonically increasing; bumped on every update
 
     def update(self, ticker: str, price: float, timestamp: float | None = None) -> PriceUpdate:
@@ -31,11 +32,15 @@ class PriceCache:
             prev = self._prices.get(ticker)
             previous_price = prev.price if prev else price
 
+            rounded = round(price, 2)
+            session_open = self._session_opens.setdefault(ticker, rounded)
+
             update = PriceUpdate(
                 ticker=ticker,
-                price=round(price, 2),
+                price=rounded,
                 previous_price=round(previous_price, 2),
                 timestamp=ts,
+                session_open=session_open,
             )
             self._prices[ticker] = update
             self._version += 1
