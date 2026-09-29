@@ -101,3 +101,16 @@ class TestPriceCache:
         cache = PriceCache()
         update = cache.update("AAPL", 190.12345)
         assert update.price == 190.12
+
+
+def test_session_open_recorded_once_per_ticker():
+    """session_open is the first price seen and never changes afterwards."""
+    cache = PriceCache()
+    first = cache.update("AAPL", 190.00)
+    assert first.session_open == 190.00
+
+    later = cache.update("AAPL", 195.00)
+    assert later.session_open == 190.00
+    assert later.to_dict()["session_open"] == 190.00
+
+    assert cache.update("GOOGL", 175.00).session_open == 175.00
