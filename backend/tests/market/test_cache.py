@@ -96,6 +96,30 @@ class TestPriceCache:
         update = cache.update("AAPL", 190.50, timestamp=custom_ts)
         assert update.timestamp == custom_ts
 
+    def test_session_open_recorded_once(self):
+        """Test that session_open is the first price and never changes."""
+        cache = PriceCache()
+        first = cache.update("AAPL", 190.00)
+        assert first.session_open == 190.00
+        later = cache.update("AAPL", 195.00)
+        assert later.session_open == 190.00
+        assert cache.get("AAPL").session_open == 190.00
+
+    def test_session_open_per_ticker(self):
+        """Test that session_open is tracked independently per ticker."""
+        cache = PriceCache()
+        cache.update("AAPL", 190.00)
+        update = cache.update("GOOGL", 175.00)
+        assert update.session_open == 175.00
+
+    def test_session_open_survives_remove(self):
+        """Test that session_open stays fixed after a ticker is removed and re-added."""
+        cache = PriceCache()
+        cache.update("AAPL", 190.00)
+        cache.remove("AAPL")
+        update = cache.update("AAPL", 200.00)
+        assert update.session_open == 190.00
+
     def test_price_rounding(self):
         """Test that prices are rounded to 2 decimal places."""
         cache = PriceCache()

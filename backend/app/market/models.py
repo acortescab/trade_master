@@ -14,6 +14,7 @@ class PriceUpdate:
     price: float
     previous_price: float
     timestamp: float = field(default_factory=time.time)  # Unix seconds
+    session_open: float | None = None  # First price seen since backend start; None -> price
 
     @property
     def change(self) -> float:
@@ -42,6 +43,7 @@ class PriceUpdate:
             "ticker": self.ticker,
             "price": self.price,
             "previous_price": self.previous_price,
+            "session_open": self.price if self.session_open is None else self.session_open,
             "timestamp": self.timestamp,
             "change": self.change,
             "change_percent": self.change_percent,

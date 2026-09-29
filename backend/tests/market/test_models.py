@@ -69,6 +69,18 @@ class TestPriceUpdate:
         assert result["change_percent"] == 0.2632  # (0.50 / 190.00) * 100
         assert result["direction"] == "up"
 
+    def test_to_dict_includes_session_open(self):
+        """Test that session_open is serialized."""
+        update = PriceUpdate(
+            ticker="AAPL", price=190.50, previous_price=190.00, timestamp=1234567890.0, session_open=188.00
+        )
+        assert update.to_dict()["session_open"] == 188.00
+
+    def test_to_dict_session_open_defaults_to_price(self):
+        """Test that session_open falls back to price when unset."""
+        update = PriceUpdate(ticker="AAPL", price=190.50, previous_price=190.00, timestamp=1234567890.0)
+        assert update.to_dict()["session_open"] == 190.50
+
     def test_immutability(self):
         """Test that PriceUpdate is immutable."""
         update = PriceUpdate(ticker="AAPL", price=190.50, previous_price=190.00, timestamp=1234567890.0)
