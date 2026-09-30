@@ -1,0 +1,19 @@
+{
+  "name": "trama-e2e",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Playwright E2E tests for TraMa, run from the host against the app (LLM_MOCK=true)",
+  "scripts": {
+    "test": "playwright test",
+    "test:api": "playwright test --project=api",
+    "test:ui": "playwright test --project=ui",
+    "typecheck": "tsc --noEmit",
+    "report": "playwright show-report",
+    "install:browsers": "playwright install chromium"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.63.0",
+    "@types/node": "^26.6.3",
+    "typescript": "^7.0.2"
+  }
+}
