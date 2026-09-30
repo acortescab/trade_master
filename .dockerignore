@@ -1,0 +1,36 @@
+# VCS / tooling
+.git
+.github
+.claude
+**/__pycache__
+**/*.pyc
+**/.pytest_cache
+**/.ruff_cache
+**/.coverage
+**/htmlcov
+
+# Secrets and local state
+.env
+db/
+**/*.db
+**/*.db-wal
+**/*.db-shm
+
+# Python
+backend/.venv
+backend/static
+backend/tests
+backend/market_data_demo.py
+
+# Frontend build artifacts (rebuilt inside the image)
+frontend/node_modules
+frontend/.next
+frontend/out
+frontend/coverage
+
+# Not part of the image
+test/
+planning/
+scripts/
+**/*.md
+!backend/README.md
