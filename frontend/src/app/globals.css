@@ -1,0 +1,71 @@
+@import "tailwindcss";
+
+@theme {
+  --color-canvas: #0d1117;
+  --color-panel: #121821;
+  --color-raised: #18202b;
+  --color-line: #222c3a;
+  --color-line-strong: #33404f;
+  --color-ink: #dde4ec;
+  --color-ink-2: #8b97a8;
+  --color-ink-3: #5c6879;
+
+  --color-up: #2fb67c;
+  --color-down: #e5534b;
+  --color-accent: #ecad0a;
+  --color-primary: #209dd7;
+  --color-secondary: #753991;
+  --color-secondary-hover: #8a47a9;
+
+  --font-sans: "IBM Plex Sans Condensed", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+html,
+body {
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  color-scheme: dark;
+}
+
+.num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+/* Price flash: the class snaps the tint on; removing it fades out over ~500ms. */
+.flash-cell {
+  transition: background-color 500ms ease-out, color 500ms ease-out;
+}
+.flash-up {
+  background-color: color-mix(in srgb, var(--color-up) 28%, transparent);
+  transition: none;
+}
+.flash-down {
+  background-color: color-mix(in srgb, var(--color-down) 28%, transparent);
+  transition: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flash-cell {
+    transition: none;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 1px;
+}
+
+/* Thin, recessive scrollbars for the dense panels. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-line-strong) transparent;
+}
+
+.recharts-wrapper:focus,
+.recharts-surface:focus {
+  outline: none;
+}
